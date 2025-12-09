@@ -114,7 +114,6 @@ class LoginApp(ctk.CTk):
             messagebox.showerror("Error", "Complete todos los campos y seleccione su rol")
             return
 
-
         # Verificar en la base de datos (USANDO %s)
         self.cursor.execute("SELECT contraseña, rol FROM usuario WHERE usuario=%s", (usuario,)) 
         resultado = self.cursor.fetchone()
@@ -122,11 +121,22 @@ class LoginApp(ctk.CTk):
 
         if resultado:
             hash_guardado, rol_bd = resultado
-            
             # hash_guardado y rol_bd son strings de la BD, no necesitamos .encode()
             if hashlib.sha256(contraseña.encode()).hexdigest() == hash_guardado and rol_bd == rol:
                 messagebox.showinfo("Éxito", f"¡Bienvenido, {usuario.upper()}!")
-                self.destroy()
+                if rol == "vendedor":
+                    
+                    self.destroy()
+                    from VendedorMenu import MenuVendedor
+                    menu = MenuVendedor(rol="Vendedor")
+                    menu.mainloop()
+                # elif rol == "admin":
+                #     self.destroy()
+                #     from AdminMenu import MenuAdmin
+                #     menu = MenuAdmin(rol="Administrador")
+                #     menu.mainloop()
+                
+                
                 # Aquí irán tus menús
             else:
                 messagebox.showerror("Error", "Contraseña incorrecta o rol no válido")
@@ -144,7 +154,7 @@ class LoginApp(ctk.CTk):
                     messagebox.showinfo("¡Usuario creado!", 
                                         f"Usuario '{usuario}' creado como {rol.upper()}\n"
                                         f"¡Ya puedes ingresar!")
-                    self.destroy()
+                    
                     # Aquí también puedes abrir el menú directamente
                 except psycopg2.Error as e:
                     # Si falla (ej. si el usuario ya existe por alguna razón o hay un error de DB)
@@ -159,8 +169,3 @@ class LoginApp(ctk.CTk):
 if __name__ == "__main__":
     app = LoginApp()
     app.mainloop()
-
-# IMPORTANTE: Asegúrate de cerrar la conexión cuando la aplicación termine
-# (Aunque al usar self.destroy() en el login, la conexión se mantiene abierta hasta el final de mainloop)
-# Es una buena práctica agregar el cierre al final del mainloop o usar un bloque 'with',
-# pero para una aplicación simple como esta, el código de arriba es funcional.
