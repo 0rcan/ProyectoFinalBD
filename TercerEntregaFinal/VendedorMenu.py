@@ -48,7 +48,7 @@ class MenuVendedor(ctk.CTk):
         cliente_image = CTkImage(Image.open("Imagenes/cliente.png"), size=(40, 40))
         
         btn_clientes = ctk.CTkButton(content_frame, text="Clientes consultar/registrar", 
-            command=lambda: self.handle_action("Clientes"),
+            command=lambda: self.consultar_cliente("Clientes"),
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
@@ -60,7 +60,7 @@ class MenuVendedor(ctk.CTk):
         pedidos_image = CTkImage(Image.open("Imagenes/carrito.png"), size=(40, 40))
         
         btn_pedidos = ctk.CTkButton(content_frame, text="Nuevo pedidos", 
-            command=lambda: self.handle_action("Pedidos"),
+            command=lambda: self.nuevo_pedidos("Pedidos"),
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
@@ -72,7 +72,7 @@ class MenuVendedor(ctk.CTk):
         productos_image = CTkImage(Image.open("Imagenes/caja.png"), size=(40, 40))
         
         btn_productos = ctk.CTkButton(content_frame, text="Pedidos cliente", 
-            command=lambda: self.handle_action("Productos"),
+            command=lambda: self.pedidos_cliente("Productos"),
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
@@ -84,7 +84,7 @@ class MenuVendedor(ctk.CTk):
         reportes_image = CTkImage(Image.open("Imagenes/aprobar.png"), size=(40, 40))
         
         btn_reportes = ctk.CTkButton(content_frame, text="Entregar y facturar", 
-            command=lambda: self.handle_action("Reportes"),
+            command=lambda: self.entregar_factura("Reportes"),
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
@@ -109,10 +109,29 @@ class MenuVendedor(ctk.CTk):
         
 
 
-    def handle_action(self, action_name):
-        """Función de ejemplo para manejar el clic en cada panel."""
-        print(f"Acción seleccionada: {action_name}")
-        # Aquí iría el código para abrir la ventana de Clientes, Pedidos, etc.
+    def consultar_cliente(self, modulo):
+        """Función para manejar consulta de clientes."""
+        print(f"Acción seleccionada: {modulo}")
+        self.destroy()  # Cerrar la ventana actual
+        from RegistrarConsultarCliente import RegistrarConsultarCliente
+        app = RegistrarConsultarCliente()
+        app.mainloop()
+        # Aquí iría el código para abrir la ventana de Clientes
+
+    def nuevo_pedidos(self, modulo):
+        """Función para crear nuevo pedido."""
+        print(f"Acción seleccionada: {modulo}")
+        # Aquí iría el código para crear nuevo pedido
+
+    def pedidos_cliente(self, modulo):
+        """Función para ver pedidos del cliente."""
+        print(f"Acción seleccionada: {modulo}")
+        # Aquí iría el código para abrir la ventana de Pedidos del Cliente
+
+    def entregar_factura(self, modulo):
+        """Función para entregar y facturar."""
+        print(f"Acción seleccionada: {modulo}")
+        # Aquí iría el código para entregar y facturar
 
     def cerrar_sesion(self):
         """Cierra la ventana actual."""

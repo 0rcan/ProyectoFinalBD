@@ -130,11 +130,12 @@ class LoginApp(ctk.CTk):
                     from VendedorMenu import MenuVendedor
                     menu = MenuVendedor(rol="Vendedor")
                     menu.mainloop()
-                # elif rol == "admin":
-                #     self.destroy()
-                #     from AdminMenu import MenuAdmin
-                #     menu = MenuAdmin(rol="Administrador")
-                #     menu.mainloop()
+                    
+                elif rol == "admin":
+                    self.destroy()
+                    from AdminMenu import AdminMenu
+                    menu = AdminMenu()
+                    menu.mainloop()
                 
                 
                 # Aquí irán tus menús
