@@ -4,7 +4,7 @@ from tkinter import messagebox
 import os 
 
 # Configuración de apariencia de CustomTkinter
-ctk.set_appearance_mode("Dark")
+ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
 class RegistrarConsultarCliente(ctk.CTk):
@@ -16,6 +16,8 @@ class RegistrarConsultarCliente(ctk.CTk):
         self.geometry("600x700")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
+        self.resizable(False, False)
+        self.configure(fg_color="#f0f0f0")
 
         # --- Conexión a la Base de Datos ---
         try:
@@ -157,6 +159,15 @@ class RegistrarConsultarCliente(ctk.CTk):
 
         if not id_cliente or not nombre_completo or not telefono:
             messagebox.showwarning("Advertencia", "Todos los campos de registro son obligatorios.")
+            return
+        
+        # Validar que el teléfono contenga solo dígitos numéricos
+        if not telefono.isdigit():
+            messagebox.showerror("Error de  Validación", "El teléfono debe contener solo dígitos numéricos.")
+            return
+
+        if len(telefono) < 10 or len(telefono) > 10:
+            messagebox.showerror("Error de Validación", "El teléfono debe contener al menos 10 dígitos.")
             return
 
         if not self.conn:
