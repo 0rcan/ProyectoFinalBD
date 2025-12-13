@@ -3,6 +3,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from PIL import Image
 from customtkinter import CTkImage
+import os
 
 # import psycopg2
 import hashlib
@@ -27,10 +28,10 @@ class LoginApp(ctk.CTk):
         # =============================================================
         try:
             self.conn = psycopg2.connect(
-                host="localhost",           # Servidor pgadmin
-                user="postgres",            # Usuario
-                password="josue",           # Contraseña
-                dbname="ProyectoFinalEntrega2" # Base de datos
+            host=os.getenv("DB_HOST", "localhost"),   # Servidor pgAdmin
+            user=os.getenv("DB_USER"),                # Usuario
+            password=os.getenv("DB_PASSWORD"),        # Contraseña
+            dbname=os.getenv("DB_NAME", "ProyectoFinal")
             )
             self.cursor = self.conn.cursor()
             print("Conexión a PostgreSQL establecida con éxito.")
