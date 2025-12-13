@@ -134,14 +134,17 @@ class MenuVendedor(ctk.CTk):
         
 
     def pedidos_cliente(self, modulo):
-        """Función para ver pedidos del cliente."""
-        print(f"Acción seleccionada: {modulo}")
-        # Aquí iría el código para abrir la ventana de Pedidos del Cliente
+        print (f"Acción seleccionada: {modulo}")
+        from PedidosPendientes import PedidosPendientes
+        app = PedidosPendientes()
+        app.mainloop()
 
     def entregar_factura(self, modulo):
-        """Función para entregar y facturar."""
-        print(f"Acción seleccionada: {modulo}")
-        # Aquí iría el código para entregar y facturar
+        print (f"Acción seleccionada: {modulo}")
+        self.destroy()
+        from EntregaPedido import EntregaPedido
+        app = EntregaPedido()
+        app.mainloop()
 
     def cerrar_sesion(self):
         """Cierra la ventana actual."""

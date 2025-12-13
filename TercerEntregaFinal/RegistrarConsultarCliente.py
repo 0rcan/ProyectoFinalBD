@@ -162,7 +162,7 @@ class RegistrarConsultarCliente(ctk.CTk):
             messagebox.showerror("Error de  Validación", "El teléfono debe contener solo dígitos numéricos.")
             return
 
-        if len(telefono) < 10 and len(telefono) > 10:
+        if len(telefono) < 10 or len(telefono) > 10:
             messagebox.showerror("Error de Validación", "El teléfono debe contener al menos 10 dígitos.")
             return
 
