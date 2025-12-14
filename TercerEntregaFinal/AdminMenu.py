@@ -1,6 +1,8 @@
 # AdminMenu.py - Contenedor negro más pequeño y elegante
 import customtkinter as ctk
 from tkinter import messagebox
+from controller.cliente_controller import ClienteController
+from view.cliente_view import GestionClienteView
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -84,8 +86,13 @@ class AdminMenu(ctk.CTk):
     # =============== FUNCIONES ===============
     def gestion_usuarios(self): 
         messagebox.showinfo("Admin", "Abriendo Gestión de Usuarios")
+        
     def gestion_clientes(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Clientes")
+        controller = ClienteController()
+        view = GestionClienteView(controller)
+        controller.set_view(view)
+        view.mainloop()
+
     def gestion_proveedores(self): 
         messagebox.showinfo("Admin", "Abriendo Gestión de Proveedores")
     def productos_terminados(self): 

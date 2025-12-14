@@ -119,7 +119,7 @@ class MenuVendedor(ctk.CTk):
     def consultar_cliente(self, modulo):
         """Función para manejar consulta de clientes."""
         print(f"Acción seleccionada: {modulo}")
-        self.destroy()  # Cerrar la ventana actual
+          # Cerrar la ventana actual
         from RegistrarConsultarCliente import RegistrarConsultarCliente
         app = RegistrarConsultarCliente()
         app.mainloop()
@@ -127,7 +127,7 @@ class MenuVendedor(ctk.CTk):
 
     def nuevo_pedidos(self, modulo):
         print(f"Acción seleccionada: {modulo}")
-        self.destroy()
+        
         from NuevoPedido import NuevoPedido
         app = NuevoPedido()
         app.mainloop()
@@ -141,7 +141,7 @@ class MenuVendedor(ctk.CTk):
 
     def entregar_factura(self, modulo):
         print (f"Acción seleccionada: {modulo}")
-        self.destroy()
+        
         from EntregaPedido import EntregaPedido
         app = EntregaPedido()
         app.mainloop()

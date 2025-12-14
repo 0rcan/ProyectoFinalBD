@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import psycopg2
 from tkinter import messagebox
+from db.conexion import obtener_conexion
+import os
 
 # Configuración de apariencia de CustomTkinter
 ctk.set_appearance_mode("light")
@@ -21,10 +23,10 @@ class RegistrarConsultarCliente(ctk.CTk):
         # --- Conexión a la Base de Datos ---
         try:
             self.conn = psycopg2.connect(
-                host="localhost",           # Servidor pgadmin
-                user="postgres",            # Usuario
-                password="josue",           # Contraseña
-                dbname="ProyectoFinalEntrega2" # Base de datos
+                host=os.getenv("DB_HOST", "localhost"),   # Servidor pgAdmin
+                user=os.getenv("DB_USER"),                # Usuario
+                password=os.getenv("DB_PASSWORD"),        # Contraseña
+                dbname=os.getenv("DB_NAME", "ProyectoFinal") # Nombre de la base de datos
             )
         except Exception as e:
             messagebox.showerror("Error de Conexión", f"No se pudo conectar a la base de datos: {e}")
