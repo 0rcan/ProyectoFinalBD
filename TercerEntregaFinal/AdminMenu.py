@@ -1,8 +1,6 @@
 # AdminMenu.py - Contenedor negro más pequeño y elegante
 import customtkinter as ctk
 from tkinter import messagebox
-from controller.cliente_controller import ClienteController
-from view.cliente_view import GestionClienteView
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -86,15 +84,20 @@ class AdminMenu(ctk.CTk):
     # =============== FUNCIONES ===============
     def gestion_usuarios(self): 
         messagebox.showinfo("Admin", "Abriendo Gestión de Usuarios")
-        
     def gestion_clientes(self): 
-        controller = ClienteController()
-        view = GestionClienteView(controller)
-        controller.set_view(view)
-        view.mainloop()
-
+        try:
+            from gestionClientes import gestionCliente
+            app = gestionCliente()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Gestión de Clientes: {e}")
     def gestion_proveedores(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Proveedores")
+        try:
+            from gestionProveedor import gestionProveedor
+            app = gestionProveedor()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Gestión de Proveedores: {e}")
     def productos_terminados(self): 
         messagebox.showinfo("Admin", "Abriendo Productos Terminados")
     def reportes(self): 
@@ -104,7 +107,12 @@ class AdminMenu(ctk.CTk):
     def piezas_uniforme(self): 
         messagebox.showinfo("Admin", "Abriendo Piezas de Uniforme")
     def materias_primas(self): 
-        messagebox.showinfo("Admin", "Abriendo Materias Primas")
+        try:
+            from gestionMateriaPrima import GestionMateriaPrima
+            app = GestionMateriaPrima()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Materias Primas: {e}")
     def pedidos_facturacion(self): 
         messagebox.showinfo("Admin", "Abriendo Pedidos y Facturación")
 

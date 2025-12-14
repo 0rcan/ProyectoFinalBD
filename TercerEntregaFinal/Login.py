@@ -3,7 +3,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from PIL import Image
 from customtkinter import CTkImage
-from db.conexion import obtener_conexion
+from conexion import obtener_conexion
 import os
 
 # import psycopg2
@@ -95,15 +95,37 @@ class LoginApp(ctk.CTk):
         roles_frame = ctk.CTkFrame(right_frame, fg_color="transparent")
         roles_frame.pack(pady=40)
         
-        # Imágenes de botones
-        vendedor_img = CTkImage(Image.open("Imagenes/campana.png"), size=(80, 80))
-        admin_img = CTkImage(Image.open("Imagenes/usuario.png"), size=(80, 80))
+        # Imágenes de botones (resolviendo rutas relativas de forma segura)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        img_dir = os.path.join(base_dir, "Imagenes")
+
+        campana_path = os.path.join(img_dir, "campana.png")
+        usuario_path = os.path.join(img_dir, "usuario.png")
+
+        vendedor_img = None
+        admin_img = None
+
+        try:
+            if os.path.exists(campana_path):
+                vendedor_img = CTkImage(Image.open(campana_path), size=(80, 80))
+            else:
+                print(f"Advertencia: No se encontró imagen: {campana_path}")
+        except Exception as e:
+            print(f"Error cargando imagen de vendedor: {e}")
+
+        try:
+            if os.path.exists(usuario_path):
+                admin_img = CTkImage(Image.open(usuario_path), size=(80, 80))
+            else:
+                print(f"Advertencia: No se encontró imagen: {usuario_path}")
+        except Exception as e:
+            print(f"Error cargando imagen de administrador: {e}")
 
 
         # Botones de rol
         # Boton Vendedor
         btn_vendedor = ctk.CTkButton(roles_frame, width=180, height=180, corner_radius=20,
-                                     fg_color="#e9ecef", hover_color="#c0c4c8", image=vendedor_img, text="",
+                         fg_color="#e9ecef", hover_color="#c0c4c8", image=vendedor_img if vendedor_img else None, text="",
                                      command=lambda: self.seleccionar_rol("vendedor"))
         # Estilo
         btn_vendedor.grid(row=0, column=0, padx=40, pady=20)
@@ -112,7 +134,7 @@ class LoginApp(ctk.CTk):
 
         # Boton Administrador
         btn_admin = ctk.CTkButton(roles_frame, width=180, height=180, corner_radius=20,
-                                  fg_color="#e9ecef", hover_color="#c0c4c8", image=admin_img, text="",
+                      fg_color="#e9ecef", hover_color="#c0c4c8", image=admin_img if admin_img else None, text="",
                                   command=lambda: self.seleccionar_rol("admin"))
         
         # Estilo

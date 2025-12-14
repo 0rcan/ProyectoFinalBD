@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 import psycopg2
 from datetime import datetime
-from db.conexion import obtener_conexion
+from conexion import obtener_conexion
 import os
 
 # Configuración de apariencia
