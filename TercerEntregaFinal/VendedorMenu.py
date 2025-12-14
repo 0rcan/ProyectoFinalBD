@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 from customtkinter import CTkImage
+from conexion import obtener_conexion
 import os
 
 # ================== CONFIGURACIÓN GENERAL ==================
@@ -21,17 +22,21 @@ class MenuVendedor(ctk.CTk):
         main_container.pack(fill="both", expand=True)
         
 
-        # 3. Frame para el Encabezado
+
+       # 3. Frame para el Encabezado
         header_frame = ctk.CTkFrame(main_container, fg_color="#e8e8e8")
-        header_frame.pack(fill="x")
-        # Encabezado compacto
-        self.create_header(header_frame, rol)
+        header_frame.pack(fill="both", expand=True)
+        
+        header_frame.grid_columnconfigure((1, 0), weight=1)
+        header_frame.grid_rowconfigure((1, 0), weight=1)
+        
+        self.create_header(header_frame,rol)
 
 
         
         # 4. Frame para el Contenido Central (Grid 2x2)
         content_frame = ctk.CTkFrame(main_container, fg_color="#f0f0f0")
-        content_frame.pack(padx=16, pady=16, fill="both", expand=True)
+        content_frame.pack(padx=10, pady=20, fill="both", expand=True)
         
         # Configuración del grid dentro del content_frame
         content_frame.grid_columnconfigure((0, 1), weight=1, minsize=200)
@@ -72,7 +77,7 @@ class MenuVendedor(ctk.CTk):
         pedidos_image = load_icon("carrito.png", size=(40, 40))
         
         # Botón de Pedidos
-        btn_pedidos = ctk.CTkButton(content_frame, text="Nuevo pedido", 
+        btn_pedidos = ctk.CTkButton(content_frame, text="Nuevo pedidos", 
             command=lambda: self.nuevo_pedidos("Pedidos"),
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
@@ -129,46 +134,32 @@ class MenuVendedor(ctk.CTk):
     def consultar_cliente(self, modulo):
         """Función para manejar consulta de clientes."""
         print(f"Acción seleccionada: {modulo}")
-        # Cerrar la ventana actual y abrir la interfaz de clientes
-        try:
-            from RegistrarConsultarCliente import RegistrarConsultarCliente
-            self.destroy()
-            app = RegistrarConsultarCliente()
-            app.mainloop()
-        except Exception as e:
-            print(f"Error al abrir RegistrarConsultarCliente: {e}")
+          # Cerrar la ventana actual
+        from RegistrarConsultarCliente import RegistrarConsultarCliente
+        app = RegistrarConsultarCliente()
+        app.mainloop()
         # Aquí iría el código para abrir la ventana de Clientes
 
     def nuevo_pedidos(self, modulo):
         print(f"Acción seleccionada: {modulo}")
-        try:
-            from NuevoPedido import NuevoPedido
-            self.destroy()
-            app = NuevoPedido()
-            app.mainloop()
-        except Exception as e:
-            print(f"Error al abrir NuevoPedido: {e}")
+        
+        from NuevoPedido import NuevoPedido
+        app = NuevoPedido()
+        app.mainloop()
         
 
     def pedidos_cliente(self, modulo):
         print (f"Acción seleccionada: {modulo}")
-        try:
-            from PedidosPendientes import PedidosPendientes
-            self.destroy()
-            app = PedidosPendientes()
-            app.mainloop()
-        except Exception as e:
-            print(f"Error al abrir PedidosPendientes: {e}")
+        from PedidosPendientes import PedidosPendientes
+        app = PedidosPendientes()
+        app.mainloop()
 
     def entregar_factura(self, modulo):
         print (f"Acción seleccionada: {modulo}")
-        try:
-            from EntregaPedido import EntregaPedido
-            self.destroy()
-            app = EntregaPedido()
-            app.mainloop()
-        except Exception as e:
-            print(f"Error al abrir EntregaPedido: {e}")
+        
+        from EntregaPedido import EntregaPedido
+        app = EntregaPedido()
+        app.mainloop()
 
     def cerrar_sesion(self):
         """Cierra la ventana actual."""
