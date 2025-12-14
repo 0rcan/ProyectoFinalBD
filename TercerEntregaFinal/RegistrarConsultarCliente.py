@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import psycopg2
 from tkinter import messagebox
-from db.conexion import obtener_conexion
+from conexion import obtener_conexion
 import os
 
 # Configuración de apariencia de CustomTkinter

@@ -2,7 +2,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
-ctk.set_appearance_mode("light")
+ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
 class AdminMenu(ctk.CTk):

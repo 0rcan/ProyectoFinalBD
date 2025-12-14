@@ -111,7 +111,7 @@ class gestionCliente(ctk.CTk):
         bar = ctk.CTkFrame(self)
         bar.pack(fill="x")
 
-        ctk.CTkButton(bar, text="Cerrar", command=self.destroy).pack(side="left", padx=10)
+        ctk.CTkButton(bar, text="Volver", command=self.volver).pack(side="left", padx=10)
         ctk.CTkLabel(bar, text="Usuario: vendedor01").pack(side="right", padx=10)
 
     # --------------------------------------------------
@@ -237,6 +237,12 @@ class gestionCliente(ctk.CTk):
         self.cliente_id_actual = None
         self.nombre_entry.delete(0, "end")
         self.telefonos_entry.delete(0, "end")
+    
+    def volver(self):
+        self.destroy()
+        from AdminMenu import AdminMenu
+        app = AdminMenu("vendedor01")
+        app.mainloop()
 
 
 if __name__ == "__main__":
