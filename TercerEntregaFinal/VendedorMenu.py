@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 from customtkinter import CTkImage
+import os
 
 # ================== CONFIGURACIÓN GENERAL ==================
 ctk.set_appearance_mode("light")
@@ -42,10 +43,23 @@ class MenuVendedor(ctk.CTk):
 
 
         # Crear 4 botones 2x2
+
+        # Helper para cargar imágenes de forma segura relativa al archivo
+        def load_icon(filename: str, size: tuple[int, int]):
+            try:
+                base_dir = os.path.dirname(__file__)
+                img_path = os.path.join(base_dir, "Imagenes", filename)
+                if not os.path.exists(img_path):
+                    raise FileNotFoundError(img_path)
+                return CTkImage(Image.open(img_path), size=size)
+            except Exception as e:
+                # Si falla, devuelve None para crear botón solo con texto
+                print(f"Advertencia: no se pudo cargar la imagen '{filename}': {e}")
+                return None
         
         # CLIENTES
         # Imagen para el botón de Clientes
-        cliente_image = CTkImage(Image.open("Imagenes/cliente.png"), size=(40, 40))
+        cliente_image = load_icon("cliente.png", size=(40, 40))
         
         # Botón de Clientes
         btn_clientes = ctk.CTkButton(content_frame, text="Clientes consultar/registrar", 
@@ -53,13 +67,13 @@ class MenuVendedor(ctk.CTk):
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
-            image=cliente_image, compound="top")  # Agregar la imagen arriba del texto
+            image=cliente_image, compound="top" if cliente_image else None)  # Agregar la imagen arriba del texto si existe
         btn_clientes.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
 
         # PEDIDOS
         # Imagen para el botón de Pedidos
-        pedidos_image = CTkImage(Image.open("Imagenes/carrito.png"), size=(40, 40))
+        pedidos_image = load_icon("carrito.png", size=(40, 40))
         
         # Botón de Pedidos
         btn_pedidos = ctk.CTkButton(content_frame, text="Nuevo pedidos", 
@@ -67,13 +81,13 @@ class MenuVendedor(ctk.CTk):
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
-            image=pedidos_image, compound="top")
+            image=pedidos_image, compound="top" if pedidos_image else None)
         btn_pedidos.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
 
         # PRODUCTOS
         # Imagen para el botón de Productos
-        productos_image = CTkImage(Image.open("Imagenes/caja.png"), size=(40, 40))
+        productos_image = load_icon("caja.png", size=(40, 40))
         
         # Botón de Productos
         btn_productos = ctk.CTkButton(content_frame, text="Pedidos cliente", 
@@ -81,13 +95,13 @@ class MenuVendedor(ctk.CTk):
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
-            image=productos_image, compound="top")
+            image=productos_image, compound="top" if productos_image else None)
         btn_productos.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 
         # REPORTES
         # Imagen para el botón de Reportes
-        reportes_image = CTkImage(Image.open("Imagenes/aprobar.png"), size=(40, 40))
+        reportes_image = load_icon("aprobar.png", size=(40, 40))
         
         # Botón de Reportes
         btn_reportes = ctk.CTkButton(content_frame, text="Entregar y facturar", 
@@ -95,7 +109,7 @@ class MenuVendedor(ctk.CTk):
             fg_color="#e9ecef", text_color="#000000", hover_color="#c0c4c8",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=60,
-            image=reportes_image, compound="top")
+            image=reportes_image, compound="top" if reportes_image else None)
         btn_reportes.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
         
         
@@ -119,7 +133,7 @@ class MenuVendedor(ctk.CTk):
     def consultar_cliente(self, modulo):
         """Función para manejar consulta de clientes."""
         print(f"Acción seleccionada: {modulo}")
-        self.destroy()  # Cerrar la ventana actual
+          # Cerrar la ventana actual
         from RegistrarConsultarCliente import RegistrarConsultarCliente
         app = RegistrarConsultarCliente()
         app.mainloop()
@@ -127,7 +141,7 @@ class MenuVendedor(ctk.CTk):
 
     def nuevo_pedidos(self, modulo):
         print(f"Acción seleccionada: {modulo}")
-        self.destroy()
+        
         from NuevoPedido import NuevoPedido
         app = NuevoPedido()
         app.mainloop()
@@ -141,7 +155,7 @@ class MenuVendedor(ctk.CTk):
 
     def entregar_factura(self, modulo):
         print (f"Acción seleccionada: {modulo}")
-        self.destroy()
+        
         from EntregaPedido import EntregaPedido
         app = EntregaPedido()
         app.mainloop()

@@ -2,6 +2,8 @@ import customtkinter as ctk
 from tkinter import messagebox
 import psycopg2
 from datetime import datetime
+from db.conexion import obtener_conexion
+import os
 
 # Configuración de apariencia
 ctk.set_appearance_mode("light")
@@ -20,10 +22,10 @@ class PedidosPendientes(ctk.CTk):
         # Conexión a PostgreSQL
         try:
             self.conn = psycopg2.connect(
-                host="localhost",
-                user="postgres",
-                password="josue",
-                dbname="ProyectoFinalEntrega2"
+                host=os.getenv("DB_HOST", "localhost"),   # Servidor pgAdmin
+                user=os.getenv("DB_USER"),                # Usuario
+                password=os.getenv("DB_PASSWORD"),        # Contraseña
+                dbname=os.getenv("DB_NAME", "ProyectoFinal") # Nombre de la base de datos
             )
             self.cursor = self.conn.cursor()
             print("Conexión a PostgreSQL establecida con éxito.")

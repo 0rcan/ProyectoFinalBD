@@ -85,9 +85,21 @@ class AdminMenu(ctk.CTk):
     def gestion_usuarios(self): 
         messagebox.showinfo("Admin", "Abriendo Gestión de Usuarios")
     def gestion_clientes(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Clientes")
+        try:
+            self.destroy()
+            from gestionClientes import gestionCliente
+            app = gestionCliente()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Gestión de Clientes: {e}")
     def gestion_proveedores(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Proveedores")
+        try:
+            self.destroy()
+            from gestionProveedor import gestionProveedor
+            app = gestionProveedor()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Gestión de Proveedores: {e}")
     def productos_terminados(self): 
         messagebox.showinfo("Admin", "Abriendo Productos Terminados")
     def reportes(self): 
@@ -97,7 +109,13 @@ class AdminMenu(ctk.CTk):
     def piezas_uniforme(self): 
         messagebox.showinfo("Admin", "Abriendo Piezas de Uniforme")
     def materias_primas(self): 
-        messagebox.showinfo("Admin", "Abriendo Materias Primas")
+        try:
+            self.destroy()
+            from gestionMateriaPrima import GestionMateriaPrima
+            app = GestionMateriaPrima()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo abrir Materias Primas: {e}")
     def pedidos_facturacion(self): 
         messagebox.showinfo("Admin", "Abriendo Pedidos y Facturación")
 
