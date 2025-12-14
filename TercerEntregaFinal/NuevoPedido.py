@@ -25,10 +25,10 @@ class NuevoPedido(ctk.CTk):
         # Conexión a PostgreSQL
         try:
             self.conn = psycopg2.connect(
-                host=os.getenv("DB_HOST", "localhost"),
-                user=os.getenv("DB_USER"),
-                password=os.getenv("DB_PASSWORD"),
-                dbname=os.getenv("DB_NAME", "ProyectoFinal")
+                host=os.getenv("DB_HOST", "localhost"),   # Servidor pgAdmin
+                user=os.getenv("DB_USER"),                # Usuario
+                password=os.getenv("DB_PASSWORD"),        # Contraseña
+                dbname=os.getenv("DB_NAME", "ProyectoFinal") # Nombre de la base de datos
             )
             self.cursor = self.conn.cursor()
             print("Conexión a PostgreSQL establecida con éxito.")

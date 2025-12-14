@@ -2,7 +2,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
-ctk.set_appearance_mode("Dark")
+ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
 class AdminMenu(ctk.CTk):
@@ -86,7 +86,6 @@ class AdminMenu(ctk.CTk):
         messagebox.showinfo("Admin", "Abriendo Gestión de Usuarios")
     def gestion_clientes(self): 
         try:
-            self.destroy()
             from gestionClientes import gestionCliente
             app = gestionCliente()
             app.mainloop()
@@ -94,7 +93,6 @@ class AdminMenu(ctk.CTk):
             messagebox.showerror("Error", f"No se pudo abrir Gestión de Clientes: {e}")
     def gestion_proveedores(self): 
         try:
-            self.destroy()
             from gestionProveedor import gestionProveedor
             app = gestionProveedor()
             app.mainloop()
@@ -110,7 +108,6 @@ class AdminMenu(ctk.CTk):
         messagebox.showinfo("Admin", "Abriendo Piezas de Uniforme")
     def materias_primas(self): 
         try:
-            self.destroy()
             from gestionMateriaPrima import GestionMateriaPrima
             app = GestionMateriaPrima()
             app.mainloop()
