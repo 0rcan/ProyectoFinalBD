@@ -49,13 +49,12 @@ class AdminMenu(ctk.CTk):
         self.boton_pequeno(col_izq, "Gestión de Usuarios", self.gestion_usuarios)
         self.boton_pequeno(col_izq, "Gestión de Clientes", self.gestion_clientes)
         self.boton_pequeno(col_izq, "Gestión de Proveedores", self.gestion_proveedores)
-        self.boton_pequeno(col_izq, "Productos Terminados", self.productos_terminados)
-        self.boton_pequeno(col_izq, "Reportes e Informes", self.reportes)
+        #self.boton_pequeno(col_izq, "Productos Terminados", self.productos_terminados)
 
         self.boton_pequeno(col_der, "Gestión de Colegios", self.gestion_colegios)
         self.boton_pequeno(col_der, "Piezas de Uniforme", self.piezas_uniforme)
         self.boton_pequeno(col_der, "Materias Primas", self.materias_primas)
-        self.boton_pequeno(col_der, "Pedidos y Facturación", self.pedidos_facturacion)
+        
 
         # ================== BOTÓN CERRAR SESIÓN (bien visible) ==================
         ctk.CTkButton(self,
@@ -104,10 +103,14 @@ class AdminMenu(ctk.CTk):
             app.mainloop()
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo abrir Gestión de Proveedores: {e}")
+<<<<<<< HEAD
+
+=======
     def productos_terminados(self): 
         messagebox.showinfo("Admin", "Abriendo Productos Terminados")
     def reportes(self): 
         messagebox.showinfo("Admin", "Abriendo Reportes e Informes")
+>>>>>>> 71f3deb3b98fcbdf7b91d89a1a8766d72370ab0b
     def gestion_colegios(self):
         try:
             from GestionColegios import GestionColegios
@@ -129,8 +132,7 @@ class AdminMenu(ctk.CTk):
             app.mainloop()
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo abrir Materias Primas: {e}")
-    def pedidos_facturacion(self): 
-        messagebox.showinfo("Admin", "Abriendo Pedidos y Facturación")
+    
 
     def cerrar_sesion(self):
         
