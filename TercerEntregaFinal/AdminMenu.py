@@ -2,6 +2,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
+
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
@@ -82,8 +83,13 @@ class AdminMenu(ctk.CTk):
         
 
     # =============== FUNCIONES ===============
-    def gestion_usuarios(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Usuarios")
+    def gestion_usuarios(self):
+        try:
+            from gestionUsuarios import gestionUsuarios
+            app = gestionUsuarios()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
     def gestion_clientes(self): 
         try:
             from gestionClientes import gestionCliente
@@ -102,10 +108,20 @@ class AdminMenu(ctk.CTk):
         messagebox.showinfo("Admin", "Abriendo Productos Terminados")
     def reportes(self): 
         messagebox.showinfo("Admin", "Abriendo Reportes e Informes")
-    def gestion_colegios(self): 
-        messagebox.showinfo("Admin", "Abriendo Gestión de Colegios")
-    def piezas_uniforme(self): 
-        messagebox.showinfo("Admin", "Abriendo Piezas de Uniforme")
+    def gestion_colegios(self):
+        try:
+            from GestionColegios import GestionColegios
+            app = GestionColegios()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
+    def piezas_uniforme(self):
+        try:
+            from gestionPiezas import gestionPiezas
+            app = gestionPiezas()
+            app.mainloop()
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
     def materias_primas(self): 
         try:
             from gestionMateriaPrima import GestionMateriaPrima
