@@ -103,7 +103,14 @@ class AdminMenu(ctk.CTk):
             app.mainloop()
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo abrir Gestión de Proveedores: {e}")
+<<<<<<< HEAD
 
+=======
+    def productos_terminados(self): 
+        messagebox.showinfo("Admin", "Abriendo Productos Terminados")
+    def reportes(self): 
+        messagebox.showinfo("Admin", "Abriendo Reportes e Informes")
+>>>>>>> 71f3deb3b98fcbdf7b91d89a1a8766d72370ab0b
     def gestion_colegios(self):
         try:
             from GestionColegios import GestionColegios
