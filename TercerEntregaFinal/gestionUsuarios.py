@@ -1,3 +1,4 @@
+import hashlib
 from dotenv import load_dotenv
 import customtkinter as ctk
 import psycopg2
@@ -32,7 +33,7 @@ class gestionUsuarios(ctk.CTk):
 
     def configurar_ventana(self):
         self.title("Gestión de Usuarios")
-        self.geometry("800x620")
+        self.geometry("780x600")
 
         self.main_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.main_frame.pack(fill="both", expand=True, padx=20, pady=20)
@@ -65,34 +66,22 @@ class gestionUsuarios(ctk.CTk):
         self.usuario_entry = ctk.CTkEntry(frame, placeholder_text="Usuario")
         self.usuario_entry.pack(fill="x", padx=10, pady=5)
 
-        self.nombre_entry = ctk.CTkEntry(frame, placeholder_text="Nombre completo")
-        self.nombre_entry.pack(fill="x", padx=10, pady=5)
-
-        self.pass_entry = ctk.CTkEntry(
-            frame, placeholder_text="Contraseña", show="*"
-        )
+        self.pass_entry = ctk.CTkEntry(frame, placeholder_text="Contraseña", show="*")
         self.pass_entry.pack(fill="x", padx=10, pady=5)
 
-        self.pass2_entry = ctk.CTkEntry(
-            frame, placeholder_text="Repetir contraseña", show="*"
-        )
+        self.pass2_entry = ctk.CTkEntry(frame, placeholder_text="Repetir contraseña", show="*")
         self.pass2_entry.pack(fill="x", padx=10, pady=5)
 
-        ctk.CTkLabel(frame, text="Rol:").pack(anchor="w", padx=10, pady=(10, 0))
+        ctk.CTkLabel(frame, text="Rol").pack(anchor="w", padx=10, pady=(10, 0))
         self.rol_option = ctk.CTkOptionMenu(
-            frame, values=["Admin", "Vendedor"]
+            frame, values=["admin", "vendedor"]
         )
         self.rol_option.pack(fill="x", padx=10, pady=5)
-
-        self.estado_check = ctk.CTkCheckBox(
-            frame, text="Usuario activo"
-        )
-        self.estado_check.pack(anchor="w", padx=10, pady=5)
 
         ctk.CTkButton(
             frame, text="Guardar Usuario",
             command=self.guardar_usuario
-        ).pack(fill="x", padx=10, pady=(10, 5))
+        ).pack(fill="x", padx=10, pady=(15, 5))
 
         ctk.CTkButton(
             frame, text="Cambiar Contraseña",
@@ -120,7 +109,7 @@ class gestionUsuarios(ctk.CTk):
         ).pack(anchor="w", padx=10)
 
         self.busqueda_entry = ctk.CTkEntry(
-            frame, placeholder_text="Usuario o nombre"
+            frame, placeholder_text="Usuario"
         )
         self.busqueda_entry.pack(fill="x", padx=10, pady=5)
         self.busqueda_entry.bind("<KeyRelease>", lambda e: self.buscar_usuario())
@@ -150,14 +139,12 @@ class gestionUsuarios(ctk.CTk):
 
     def guardar_usuario(self):
         usuario = self.usuario_entry.get().strip()
-        nombre = self.nombre_entry.get().strip()
         pwd = self.pass_entry.get()
         pwd2 = self.pass2_entry.get()
-        rol = self.rol_option.get()
-        estado = self.estado_check.get()
+        rol = self.rol_option.get()  # admin / vendedor
 
-        if not usuario or not nombre:
-            messagebox.showwarning("Error", "Usuario y nombre son obligatorios")
+        if not usuario:
+            messagebox.showwarning("Error", "El usuario es obligatorio")
             return
 
         if self.usuario_id_actual is None and not pwd:
@@ -169,19 +156,20 @@ class gestionUsuarios(ctk.CTk):
             return
 
         cur = self.conn.cursor()
-
         try:
             if self.usuario_id_actual is None:
-                cur.execute("""
-                    INSERT INTO usuario (usuario, contraseña, rol, nombre_completo, estado)
-                    VALUES (%s, %s, %s, %s, %s)
-                """, (usuario, pwd, rol, nombre, estado))
+                # 🔐 HASH DE LA CONTRASEÑA
+                hash_pwd = hashlib.sha256(pwd.encode()).hexdigest()
+
+                cur.execute(
+                    "INSERT INTO usuario (usuario, contraseña, rol) VALUES (%s, %s, %s)",
+                    (usuario, hash_pwd, rol)
+                )
             else:
-                cur.execute("""
-                    UPDATE usuario
-                    SET usuario=%s, rol=%s, nombre_completo=%s, estado=%s
-                    WHERE id_usuario=%s
-                """, (usuario, rol, nombre, estado, self.usuario_id_actual))
+                cur.execute(
+                    "UPDATE usuario SET usuario=%s, rol=%s WHERE id_usuario=%s",
+                    (usuario, rol, self.usuario_id_actual)
+                )
 
             self.conn.commit()
             messagebox.showinfo("Éxito", "Usuario guardado correctamente")
@@ -206,21 +194,26 @@ class gestionUsuarios(ctk.CTk):
             messagebox.showwarning("Error", "Contraseñas inválidas")
             return
 
+        # 🔐 HASH DE LA CONTRASEÑA
+        hash_pwd = hashlib.sha256(pwd.encode()).hexdigest()
+
         cur = self.conn.cursor()
         try:
             cur.execute(
                 "UPDATE usuario SET contraseña=%s WHERE id_usuario=%s",
-                (pwd, self.usuario_id_actual)
+                (hash_pwd, self.usuario_id_actual)
             )
             self.conn.commit()
             messagebox.showinfo("Éxito", "Contraseña actualizada")
             self.pass_entry.delete(0, "end")
             self.pass2_entry.delete(0, "end")
+
         except Exception as e:
             self.conn.rollback()
             messagebox.showerror("Error", str(e))
         finally:
             cur.close()
+
 
     def eliminar_usuario(self):
         if self.usuario_id_actual is None:
@@ -234,7 +227,7 @@ class gestionUsuarios(ctk.CTk):
                 (self.usuario_id_actual,)
             )
             self.conn.commit()
-            messagebox.showinfo("Eliminado", "Usuario eliminado")
+            messagebox.showinfo("Eliminado", "Usuario eliminado correctamente")
             self.limpiar_campos()
             self.listar_usuarios()
         except Exception as e:
@@ -247,11 +240,10 @@ class gestionUsuarios(ctk.CTk):
         texto = self.busqueda_entry.get().strip()
         cur = self.conn.cursor()
 
-        cur.execute("""
-            SELECT * FROM usuario
-            WHERE usuario ILIKE %s OR nombre_completo ILIKE %s
-            ORDER BY usuario
-        """, (f"%{texto}%", f"%{texto}%"))
+        cur.execute(
+            "SELECT * FROM usuario WHERE usuario ILIKE %s ORDER BY usuario",
+            (f"%{texto}%",)
+        )
 
         usuarios = cur.fetchall()
         cur.close()
@@ -273,10 +265,7 @@ class gestionUsuarios(ctk.CTk):
         self.lista.delete("1.0", "end")
 
         for u in usuarios:
-            estado = "Activo" if u[5] else "Inactivo"
-            self.lista.insert(
-                "end", f"{u[0]} - {u[1]} - {u[3]} - {estado}\n"
-            )
+            self.lista.insert("end", f"{u[0]} - {u[1]} - {u[3]}\n")
 
         self.lista.configure(state="disabled")
         self.total_label.configure(text=f"Total usuarios: {len(usuarios)}")
@@ -293,11 +282,7 @@ class gestionUsuarios(ctk.CTk):
             self.usuario_entry.delete(0, "end")
             self.usuario_entry.insert(0, u[1])
 
-            self.nombre_entry.delete(0, "end")
-            self.nombre_entry.insert(0, u[4])
-
             self.rol_option.set(u[3])
-            self.estado_check.select() if u[5] else self.estado_check.deselect()
 
             self.pass_entry.delete(0, "end")
             self.pass2_entry.delete(0, "end")
@@ -307,10 +292,8 @@ class gestionUsuarios(ctk.CTk):
     def limpiar_campos(self):
         self.usuario_id_actual = None
         self.usuario_entry.delete(0, "end")
-        self.nombre_entry.delete(0, "end")
         self.pass_entry.delete(0, "end")
         self.pass2_entry.delete(0, "end")
-        self.estado_check.deselect()
 
 
 if __name__ == "__main__":

@@ -5,6 +5,8 @@ from PIL import Image
 from customtkinter import CTkImage
 from conexion import obtener_conexion
 import os
+import hashlib
+
 
 # import psycopg2
 import hashlib  # Permite cifrar contraseñas
